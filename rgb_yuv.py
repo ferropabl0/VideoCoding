@@ -44,10 +44,9 @@ class Practice1:
 
                 if opt == '0':
                     count = 1
-                    for r in range(0, height, w_size):
+                    for r in range(0, height, w_size):  # Iterating through blocks
                         for c in range(0, width, w_size):
-                            cur_window = y_values[r:r+w_size, c:c+w_size]
-                            cur_window = np.array(cur_window).flatten()
+                            cur_window = y_values[r:r+w_size, c:c+w_size]       # 8x8 block from r,c to r+8,c+8
                             print('Block ', count)
                             self.serpentine(cur_window)
                             count += 1
@@ -93,9 +92,10 @@ class Practice1:
                 # Threshold of dct coefficients for a greater compression
                 thresh = 0.012
                 dct_thresh = dct * (abs(dct) > (thresh * np.max(dct)))
-
+                # If the value is smaller than the threshold,
+                # dct is multiplied by 0
                 im_dct = np.zeros(imsize)
-                for i in r_[:imsize[0]:8]:
+                for i in r_[:imsize[0]:8]:  # Iterating through blocks
                     for j in r_[:imsize[1]:8]:
                         im_dct[i:(i + 8), j:(j + 8)] = converter.idct2(dct_thresh[i:(i + 8), j:(j + 8)])
                 cv2.imwrite('output_dct_paul_robert.jpg', im_dct)
@@ -109,7 +109,7 @@ class Practice1:
     @staticmethod
     def rgb_yuv(rgb):
         matrix = [[0.299, 0.587, 0.114], [-0.14713, -0.28886, 0.436], [0.615, -0.51499, -0.10001]]
-        yuv = np.matmul(matrix, rgb)
+        yuv = np.matmul(matrix, rgb)    # Matrix multiplication
         print('YUV values: ', yuv)
         return yuv
     # Reference: https://www.cs.sfu.ca/mmbook/programming_assignments/additional_notes/rgb_yuv_note/RGB-YUV.pdf
@@ -140,18 +140,18 @@ class Practice1:
     @staticmethod
     def serpentine(block):     # Expected block of size 64
         print('Original block:\n', block)
-        block = np.array(block).flatten()
+        block = np.array(block).flatten()   # Converting the matrix to an array
         scan = [1, 2, 9, 17, 10, 3, 4, 11, 18, 25, 33, 26, 19, 12, 5, 6, 13, 20, 27, 34, 41, 49, 42, 35, 28, 21, 14,
                 7, 8, 15, 22, 29, 36, 43, 50, 57, 58, 51, 44, 37, 30, 23, 16, 24, 31, 38, 45, 52, 59, 60, 53, 46, 39,
                 32, 40, 47, 54, 61, 62, 55, 48, 56, 63, 64]     # Coefficients order
 
-        scanned_block = [[0 for _ in range(8)] for _ in range(8)]
+        scanned_block = [[0 for _ in range(8)] for _ in range(8)]   # Initializing
         i = 0
         j = 0
         print('Scanned block:')
         for el in scan:
             scanned_block[j][i] = block[el-1]
-            if i == 7:
+            if i == 7:  # Condition to move to the next row
                 i = 0
                 j += 1
             else:
@@ -182,9 +182,9 @@ class Practice1:
             if bits[i] != '0' and bits[i] != '1':
                 print('Do not cheat, those are not bits!!')
                 return
-            if bits[i] == bits[i - 1]:
+            if bits[i] == bits[i - 1]:  # Checking, if they are the same, we keep increasing the count
                 count += 1
-            else:
+            else:   # Otherwise, we append and restart the count
                 res.append((bits[i - 1], count))
                 count = 1
         res.append((bits[-1], count))
@@ -192,7 +192,7 @@ class Practice1:
         return
 
 
-class DCT:
+class DCT:  # DCT class for the dct coder and decoder methods
     def __init__(self):
         pass
 
