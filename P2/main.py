@@ -40,6 +40,7 @@ if __name__ == '__main__':
     print('Video converted')
 
     # parse_video('BBB.mpg', 'ex1_frames/')
+    print('Video parsed')
 
     command2 = ['ffmpeg', '-i', 'BBB.mpg', '-vf', 'scale=-2:720', 'BBB_720.mpg']
-    subprocess.run(command2)
+    # subprocess.run(command2)
